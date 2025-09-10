@@ -120,7 +120,16 @@ juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParam
 }
 
 float PluginProcessor::applySaturation(float sample) {
-    return std::tanh(sample);
+    const float asymBias = 0.1f;
+    float sampleBias = sample + asymBias;
+    float oddHarmonics = std::tanh(sampleBias);
+
+    float squared = sampleBias * sampleBias;
+    float evenHarmonics = (squared / (1.0f + squared)) * ((sampleBias >= 0.0f) ? 1.0f : -1.0f);
+    float out = 0.8f * oddHarmonics + 0.2f * evenHarmonics;
+
+    out -= asymBias * 0.1f;
+    return out;
 }
 
 
