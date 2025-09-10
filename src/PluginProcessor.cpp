@@ -4,7 +4,8 @@ PluginProcessor::PluginProcessor()
     : AudioProcessor(BusesProperties()
         .withInput("Input", juce::AudioChannelSet::stereo(), true)
         .withOutput("Output", juce::AudioChannelSet::stereo(), true)
-) {}
+    ), apvts(*this, nullptr, "Parameters", createParameterLayout()) {
+}
 
 PluginProcessor::~PluginProcessor() = default;
 
@@ -55,26 +56,71 @@ bool PluginProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const {
 
 void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiBuffer) {
     juce::ScopedNoDenormals noDenormals;
+    
+    auto* inputGainParam = apvts.getRawParameterValue("INPUT");
+    auto* micModeParam = apvts.getRawParameterValue("MICMODE");
+    auto* outputGainParam = apvts.getRawParameterValue("OUTPUT");
+
+    jassert(inputGainParam != nullptr);
+    jassert(micModeParam != nullptr);
+    jassert(outputGainParam != nullptr);
+
+    float inputGain = juce::Decibels::decibelsToGain(inputGainParam->load());
+    bool micMode = micModeParam->load() > 0.5f;
+    float outputGain = outputGainParam->load() <= -99.0f ? 0.0f : juce::Decibels::decibelsToGain(outputGainParam->load());
+
+    float micPreGain = micMode ? juce::Decibels::decibelsToGain(40.0f) : 1.0f;
+    float micPostGain = micMode ? juce::Decibels::decibelsToGain(-18.0f) : 1.0f;
+
     for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
-        buffer.clear(channel, 0, buffer.getNumSamples());
+        float* channelData = buffer.getWritePointer(channel);
+        for (int i = 0; i < buffer.getNumSamples(); ++i) {
+            float sample = channelData[i];
+            sample *= inputGain;
+            sample *= micPreGain;
+            sample = applySaturation(sample);
+            sample *= micPostGain;
+            sample *= outputGain;
+            channelData[i] = sample;
+        }
     }
 }
 
 bool PluginProcessor::hasEditor() const {
-    return false;
+    return true;
 }
 
 juce::AudioProcessorEditor* PluginProcessor::createEditor() {
-    return nullptr;
+    return new juce::GenericAudioProcessorEditor(*this);
 }
 
 void PluginProcessor::getStateInformation(juce::MemoryBlock& destData) {
-    juce::MemoryOutputStream(destData, true).writeInt(0);
+    auto state = apvts.copyState();
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
 void PluginProcessor::setStateInformation(const void* data, int sizeInBytes) {
-    juce::MemoryInputStream stream(data, static_cast<size_t>(sizeInBytes), false);
-    stream.readInt();
+    if (data != nullptr && sizeInBytes > 0) {
+        std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+        if (xmlState != nullptr && xmlState->hasTagName(apvts.state.getType())) {
+            apvts.replaceState(juce::ValueTree::fromXml(*xmlState));
+        }
+    }
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParameterLayout() {
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>("INPUT", "Input Gain", juce::NormalisableRange<float>(0.0f, 24.0f, 0.1f), 0.0f));
+    layout.add(std::make_unique<juce::AudioParameterBool>("MICMODE", "Mic Mode", false));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OUTPUT", "Output Gain", juce::NormalisableRange<float>(-100.0f, 6.0f, 0.1f), 0.0f));
+
+    return layout;
+}
+
+float PluginProcessor::applySaturation(float sample) {
+    return std::tanh(sample);
 }
 
 

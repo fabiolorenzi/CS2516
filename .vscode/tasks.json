@@ -24,6 +24,13 @@
         },
         {
             "type": "shell",
+            "label": "Run dev standalone",
+            "command": "./build/CS2516_artefacts/Debug/Standalone/CS2516.exe",
+            "group": "build",
+            "detail": "Run dev standalone"
+        },
+        {
+            "type": "shell",
             "label": "Clean folders",
             "command": "Remove-Item -Recurse -Force -Path build, libs",
             "group": "build",
