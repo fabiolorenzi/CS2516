@@ -57,14 +57,14 @@ bool PluginProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const {
 void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiBuffer) {
     juce::ScopedNoDenormals noDenormals;
     
+    auto* leftChannelParam  = apvts.getRawParameterValue("LEFTCHANNEL");
+    auto* rightChannelParam = apvts.getRawParameterValue("RIGHTCHANNEL");
     auto* inputGainParam = apvts.getRawParameterValue("INPUT");
     auto* micModeParam = apvts.getRawParameterValue("MICMODE");
     auto* outputGainParam = apvts.getRawParameterValue("OUTPUT");
 
-    jassert(inputGainParam != nullptr);
-    jassert(micModeParam != nullptr);
-    jassert(outputGainParam != nullptr);
-
+    leftChannel = static_cast<int>(leftChannelParam->load());
+    rightChannel = static_cast<int>(rightChannelParam->load());
     float inputGain = juce::Decibels::decibelsToGain(inputGainParam->load());
     bool micMode = micModeParam->load() > 0.5f;
     float outputGain = outputGainParam->load() <= -99.0f ? 0.0f : juce::Decibels::decibelsToGain(outputGainParam->load());
@@ -74,11 +74,13 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiB
 
     for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
         float* channelData = buffer.getWritePointer(channel);
+        const SaturationSetting& saturationSetting = (channel == 0) ? channelSettingsManager.getSaturationSetting(leftChannel) : channelSettingsManager.getSaturationSetting(rightChannel);
+
         for (int i = 0; i < buffer.getNumSamples(); ++i) {
             float sample = channelData[i];
             sample *= inputGain;
             sample *= micPreGain;
-            sample = applySaturation(sample);
+            sample = applySaturation(sample, saturationSetting);
             sample *= micPostGain;
             sample *= outputGain;
             channelData[i] = sample;
@@ -112,6 +114,8 @@ void PluginProcessor::setStateInformation(const void* data, int sizeInBytes) {
 juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParameterLayout() {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
+    layout.add(std::make_unique<juce::AudioParameterInt>("LEFTCHANNEL", "Left Preset", 1, 16, 1));
+    layout.add(std::make_unique<juce::AudioParameterInt>("RIGHTCHANNEL", "Right Preset", 1, 16, 1));
     layout.add(std::make_unique<juce::AudioParameterFloat>("INPUT", "Input Gain", juce::NormalisableRange<float>(0.0f, 24.0f, 0.1f), 0.0f));
     layout.add(std::make_unique<juce::AudioParameterBool>("MICMODE", "Mic Mode", false));
     layout.add(std::make_unique<juce::AudioParameterFloat>("OUTPUT", "Output Gain", juce::NormalisableRange<float>(-100.0f, 6.0f, 0.1f), 0.0f));
@@ -119,14 +123,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParam
     return layout;
 }
 
-float PluginProcessor::applySaturation(float sample) {
+float PluginProcessor::applySaturation(float sample, const SaturationSetting& saturationSetting) {
     const float asymBias = 0.1f;
-    float sampleBias = sample + asymBias;
+    float sampleBias = sample + saturationSetting.asymBias;
     float oddHarmonics = std::tanh(sampleBias);
 
     float squared = sampleBias * sampleBias;
     float evenHarmonics = (squared / (1.0f + squared)) * ((sampleBias >= 0.0f) ? 1.0f : -1.0f);
-    float out = 0.8f * oddHarmonics + 0.2f * evenHarmonics;
+    float out = saturationSetting.oddMix * oddHarmonics + saturationSetting.evenMix * evenHarmonics;
 
     out -= asymBias * 0.1f;
     return out;

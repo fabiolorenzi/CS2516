@@ -37,11 +37,13 @@ juce_generate_juce_header(${PROJECT_NAME})
 target_sources(${PROJECT_NAME}
     PRIVATE
         src/PluginProcessor.cpp
+        src/ChannelSettingsManager.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE
         src/PluginProcessor.h
+        src/ChannelSettingsManager.h
 )
 
 target_link_libraries(${PROJECT_NAME}

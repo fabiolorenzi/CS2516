@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "ChannelSettingsManager.h"
 
 class PluginProcessor : public juce::AudioProcessor {
     public:
@@ -29,5 +30,9 @@ class PluginProcessor : public juce::AudioProcessor {
         juce::AudioProcessorValueTreeState apvts;
     
     private:
-        float applySaturation(float sample);
+        ChannelSettingsManager channelSettingsManager;
+        int leftChannel = 1;
+        int rightChannel = 1;
+
+        float applySaturation(float sample, const SaturationSetting& saturationSetting);
 };
