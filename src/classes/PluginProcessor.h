@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include <random>
 #include "classes/ChannelSettingsManager.h"
 #include "types/ColourSetting.h"
 #include "types/SaturationSetting.h"
@@ -33,6 +34,9 @@ class PluginProcessor : public juce::AudioProcessor {
     
     private:
         ChannelSettingsManager channelSettingsManager;
+        std::mt19937 randomEngine;
+        std::uniform_real_distribution<float> noiseDist;
+        //float noiseLevel = 0.0005f;
         int leftChannel = 1;
         int rightChannel = 1;
 

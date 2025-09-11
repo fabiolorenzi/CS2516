@@ -5,6 +5,7 @@ PluginProcessor::PluginProcessor()
         .withInput("Input", juce::AudioChannelSet::stereo(), true)
         .withOutput("Output", juce::AudioChannelSet::stereo(), true)
     ), apvts(*this, nullptr, "Parameters", createParameterLayout()) {
+    noiseDist = std::uniform_real_distribution<float>(-1.0f, 1.0f);
 }
 
 PluginProcessor::~PluginProcessor() = default;
@@ -58,8 +59,10 @@ void PluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
         colourLPFilter[channel].prepare(spec);
     }
 
-    updateFilters(channelSettingsManager.getColourSetting(leftChannel), 0, sampleRate);
-    updateFilters(channelSettingsManager.getColourSetting(rightChannel), 1, sampleRate);
+    randomEngine.seed(static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count()));
+
+    //updateFilters(channelSettingsManager.getColourSetting(leftChannel), 0, sampleRate);
+    //updateFilters(channelSettingsManager.getColourSetting(rightChannel), 1, sampleRate);
 }
 
 void PluginProcessor::releaseResources() {}
@@ -69,9 +72,9 @@ bool PluginProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const {
         || layouts.getMainInputChannelSet() == juce::AudioChannelSet::disabled());
 }
 
-void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiBuffer) {
+void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer&) {
     juce::ScopedNoDenormals noDenormals;
-    
+
     auto* leftChannelParam  = apvts.getRawParameterValue("LEFTCHANNEL");
     auto* rightChannelParam = apvts.getRawParameterValue("RIGHTCHANNEL");
     auto* inputGainParam = apvts.getRawParameterValue("INPUT");
@@ -89,24 +92,41 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiB
 
     for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
         float* channelData = buffer.getWritePointer(channel);
-        const SaturationSetting& saturationSetting = (channel == 0) ? channelSettingsManager.getSaturationSetting(leftChannel) : channelSettingsManager.getSaturationSetting(rightChannel);
+        const SaturationSetting& saturationSetting = (channel == 0)
+            ? channelSettingsManager.getSaturationSetting(leftChannel)
+            : channelSettingsManager.getSaturationSetting(rightChannel);
 
-        for (int i = 0; i < buffer.getNumSamples(); ++i) {
+        const ColourSetting& colourSetting = (channel == 0)
+            ? channelSettingsManager.getColourSetting(leftChannel)
+            : channelSettingsManager.getColourSetting(rightChannel);
+
+        const float& noiseLevelSetting = (channel == 0)
+            ? channelSettingsManager.getNoiseLevelSetting(leftChannel)
+            : channelSettingsManager.getNoiseLevelSetting(rightChannel);
+
+        updateFilters(colourSetting, channel, getSampleRate());
+
+        juce::dsp::AudioBlock<float> block(buffer);
+        auto singleChannelBlock = block.getSingleChannelBlock(channel);
+
+        for (int i = 0; i < singleChannelBlock.getNumSamples(); ++i) {
             float sample = channelData[i];
             sample *= inputGain;
             sample *= micPreGain;
             sample = applySaturation(sample, saturationSetting);
-            sample *= micPostGain;
-            sample *= outputGain;
-            channelData[i] = sample;
+
+            float noiseSample = noiseDist(randomEngine) * noiseLevelSetting;
+            singleChannelBlock.getChannelPointer(0)[i] = sample + noiseSample;
         }
 
-        juce::dsp::AudioBlock<float> block(buffer);
-        auto singleChannelBlock = block.getSingleChannelBlock(channel);
         juce::dsp::ProcessContextReplacing<float> context(singleChannelBlock);
         colourHPFilter[channel].process(context);
         colourLSFilter[channel].process(context);
         colourLPFilter[channel].process(context);
+
+        for (int i = 0; i < buffer.getNumSamples(); ++i) {
+            channelData[i] *= micPostGain * outputGain;
+        }
     }
 }
 
