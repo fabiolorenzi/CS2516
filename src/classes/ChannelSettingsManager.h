@@ -2,11 +2,7 @@
 
 #include <array>
 
-struct SaturationSetting {
-    float asymBias;
-    float oddMix;
-    float evenMix;
-};
+#include "types/SaturationSetting.h"
 
 class ChannelSettingsManager {
     public:

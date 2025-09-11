@@ -36,14 +36,15 @@ juce_generate_juce_header(${PROJECT_NAME})
 
 target_sources(${PROJECT_NAME}
     PRIVATE
-        src/PluginProcessor.cpp
-        src/ChannelSettingsManager.cpp
+        src/classes/PluginProcessor.cpp
+        src/classes/ChannelSettingsManager.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-        src/PluginProcessor.h
-        src/ChannelSettingsManager.h
+        src/classes/PluginProcessor.h
+        src/classes/ChannelSettingsManager.h
+        src/types/SaturationSetting.h
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -70,3 +71,8 @@ target_compile_definitions(${PROJECT_NAME}
         _SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING
 )
 endif()
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        ${PROJECT_SOURCE_DIR}/src
+)

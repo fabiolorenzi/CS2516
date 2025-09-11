@@ -1,7 +1,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "ChannelSettingsManager.h"
+#include "classes/ChannelSettingsManager.h"
+#include "types/SaturationSetting.h"
 
 class PluginProcessor : public juce::AudioProcessor {
     public:
