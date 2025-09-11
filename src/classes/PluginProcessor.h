@@ -43,6 +43,9 @@ class PluginProcessor : public juce::AudioProcessor {
         juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> colourLSFilter[2];
         juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> colourLPFilter[2];
 
+        juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> hpFilter[2];
+        juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> lpFilter[2];
+
         float applySaturation(float sample, const SaturationSetting& saturationSetting);
         void updateFilters(const ColourSetting& colourSetting, int channel, double sampleRate);
 };

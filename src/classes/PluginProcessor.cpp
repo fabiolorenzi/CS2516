@@ -57,6 +57,8 @@ void PluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
         colourHPFilter[channel].prepare(spec);
         colourLSFilter[channel].prepare(spec);
         colourLPFilter[channel].prepare(spec);
+        hpFilter[channel].prepare(spec);
+        lpFilter[channel].prepare(spec);
     }
 
     randomEngine.seed(static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count()));
@@ -82,6 +84,8 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiB
     rightChannel = static_cast<int>(rightChannelParam->load());
     float inputGain = juce::Decibels::decibelsToGain(inputGainParam->load());
     bool micMode = micModeParam->load() > 0.5f;
+    float hpFreq = apvts.getRawParameterValue("HPFILTER")->load();
+    float lpFreq = apvts.getRawParameterValue("LPFILTER")->load();
     float outputGain = outputGainParam->load() <= -99.0f ? 0.0f : juce::Decibels::decibelsToGain(outputGainParam->load());
 
     float micPreGain = micMode ? juce::Decibels::decibelsToGain(30.0f) : 1.0f;
@@ -103,6 +107,9 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiB
 
         updateFilters(colourSetting, channel, getSampleRate());
 
+        *hpFilter[channel].state = *juce::dsp::IIR::Coefficients<float>::makeHighPass(getSampleRate(), hpFreq, std::sqrt(0.5f));
+        *lpFilter[channel].state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), lpFreq, std::sqrt(0.5f));
+
         juce::dsp::AudioBlock<float> block(buffer);
         auto singleChannelBlock = block.getSingleChannelBlock(channel);
 
@@ -120,6 +127,8 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiB
         colourHPFilter[channel].process(context);
         colourLSFilter[channel].process(context);
         colourLPFilter[channel].process(context);
+        hpFilter[channel].process(context);
+        lpFilter[channel].process(context);
 
         for (int i = 0; i < buffer.getNumSamples(); ++i) {
             channelData[i] *= micPostGain * outputGain;
@@ -157,6 +166,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParam
     layout.add(std::make_unique<juce::AudioParameterInt>("RIGHTCHANNEL", "Right Preset", 1, 16, 1));
     layout.add(std::make_unique<juce::AudioParameterFloat>("INPUT", "Input Gain", juce::NormalisableRange<float>(0.0f, 24.0f, 0.1f), 0.0f));
     layout.add(std::make_unique<juce::AudioParameterBool>("MICMODE", "Mic Mode", false));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("HPFILTER", "Highpass", juce::NormalisableRange<float>(16.0f, 320.0f, 1.0f), 10.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("LPFILTER", "Lowpass", juce::NormalisableRange<float>(2500.0f, 20000.0f, 1.0f), 20000.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("OUTPUT", "Output Gain", juce::NormalisableRange<float>(-100.0f, 6.0f, 0.1f), 0.0f));
 
     return layout;
