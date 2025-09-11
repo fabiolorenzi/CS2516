@@ -60,9 +60,6 @@ void PluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
     }
 
     randomEngine.seed(static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count()));
-
-    //updateFilters(channelSettingsManager.getColourSetting(leftChannel), 0, sampleRate);
-    //updateFilters(channelSettingsManager.getColourSetting(rightChannel), 1, sampleRate);
 }
 
 void PluginProcessor::releaseResources() {}
@@ -87,7 +84,7 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiB
     bool micMode = micModeParam->load() > 0.5f;
     float outputGain = outputGainParam->load() <= -99.0f ? 0.0f : juce::Decibels::decibelsToGain(outputGainParam->load());
 
-    float micPreGain = micMode ? juce::Decibels::decibelsToGain(40.0f) : 1.0f;
+    float micPreGain = micMode ? juce::Decibels::decibelsToGain(30.0f) : 1.0f;
     float micPostGain = micMode ? juce::Decibels::decibelsToGain(-18.0f) : 1.0f;
 
     for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {

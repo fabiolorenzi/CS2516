@@ -36,7 +36,6 @@ class PluginProcessor : public juce::AudioProcessor {
         ChannelSettingsManager channelSettingsManager;
         std::mt19937 randomEngine;
         std::uniform_real_distribution<float> noiseDist;
-        //float noiseLevel = 0.0005f;
         int leftChannel = 1;
         int rightChannel = 1;
 
