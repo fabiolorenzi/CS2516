@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 #include "classes/ChannelSettingsManager.h"
+#include "types/ColourSetting.h"
 #include "types/SaturationSetting.h"
 
 class PluginProcessor : public juce::AudioProcessor {
@@ -35,5 +36,10 @@ class PluginProcessor : public juce::AudioProcessor {
         int leftChannel = 1;
         int rightChannel = 1;
 
+        juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> colourHPFilter[2];
+        juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> colourLSFilter[2];
+        juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> colourLPFilter[2];
+
         float applySaturation(float sample, const SaturationSetting& saturationSetting);
+        void updateFilters(const ColourSetting& colourSetting, int channel, double sampleRate);
 };

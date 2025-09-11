@@ -45,7 +45,22 @@ const juce::String PluginProcessor::getProgramName(int) {
 
 void PluginProcessor::changeProgramName(int index, const juce::String& newName) {}
 
-void PluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {}
+void PluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
+    juce::dsp::ProcessSpec spec {
+        sampleRate,
+        (juce::uint32)samplesPerBlock,
+        (juce::uint32)getMainBusNumOutputChannels()
+    };
+
+    for (int channel = 0; channel < 2; ++channel) {
+        colourHPFilter[channel].prepare(spec);
+        colourLSFilter[channel].prepare(spec);
+        colourLPFilter[channel].prepare(spec);
+    }
+
+    updateFilters(channelSettingsManager.getColourSetting(leftChannel), 0, sampleRate);
+    updateFilters(channelSettingsManager.getColourSetting(rightChannel), 1, sampleRate);
+}
 
 void PluginProcessor::releaseResources() {}
 
@@ -85,6 +100,13 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiB
             sample *= outputGain;
             channelData[i] = sample;
         }
+
+        juce::dsp::AudioBlock<float> block(buffer);
+        auto singleChannelBlock = block.getSingleChannelBlock(channel);
+        juce::dsp::ProcessContextReplacing<float> context(singleChannelBlock);
+        colourHPFilter[channel].process(context);
+        colourLSFilter[channel].process(context);
+        colourLPFilter[channel].process(context);
     }
 }
 
@@ -134,6 +156,14 @@ float PluginProcessor::applySaturation(float sample, const SaturationSetting& sa
 
     out -= asymBias * 0.1f;
     return out;
+}
+
+void PluginProcessor::updateFilters(const ColourSetting& colourSetting, int channel, double sampleRate) {
+    using Coeffs = juce::dsp::IIR::Coefficients<float>;
+
+    *colourHPFilter[channel].state = *Coeffs::makeHighPass(sampleRate, colourSetting.hpFreq, juce::MathConstants<float>::sqrt2);
+    *colourLSFilter[channel].state = *Coeffs::makeLowShelf(sampleRate, colourSetting.lsFreq, colourSetting.lsQ, juce::Decibels::decibelsToGain(colourSetting.lsGain));
+    *colourLPFilter[channel].state = *Coeffs::makeLowPass(sampleRate, colourSetting.lpFreq, 0.5f);
 }
 
 

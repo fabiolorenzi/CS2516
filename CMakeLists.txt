@@ -44,6 +44,7 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         src/classes/PluginProcessor.h
         src/classes/ChannelSettingsManager.h
+        src/types/ColourSetting.h
         src/types/SaturationSetting.h
 )
 
