@@ -105,10 +105,14 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiB
             ? channelSettingsManager.getNoiseLevelSetting(leftChannel)
             : channelSettingsManager.getNoiseLevelSetting(rightChannel);
 
+        const FiltersSetting& filtersSetting = (channel == 0)
+            ? channelSettingsManager.getFiltersSetting(leftChannel)
+            : channelSettingsManager.getFiltersSetting(rightChannel);
+
         updateFilters(colourSetting, channel, getSampleRate());
 
-        *hpFilter[channel].state = *juce::dsp::IIR::Coefficients<float>::makeHighPass(getSampleRate(), hpFreq, std::sqrt(0.5f));
-        *lpFilter[channel].state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), lpFreq, std::sqrt(0.5f));
+        *hpFilter[channel].state = *juce::dsp::IIR::Coefficients<float>::makeHighPass(getSampleRate(), hpFreq + filtersSetting.hpDiff, std::sqrt(0.5f));
+        *lpFilter[channel].state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), lpFreq + filtersSetting.lpDiff, std::sqrt(0.5f));
 
         juce::dsp::AudioBlock<float> block(buffer);
         auto singleChannelBlock = block.getSingleChannelBlock(channel);

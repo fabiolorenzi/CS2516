@@ -4,6 +4,7 @@ ChannelSettingsManager::ChannelSettingsManager() {
     populateSaturationSettings();
     populateColourSettings();
     populateNoiseSettings();
+    populateFiltersSettings();
 }
 
 ChannelSettingsManager::~ChannelSettingsManager() {}
@@ -36,6 +37,16 @@ const float& ChannelSettingsManager::getNoiseLevelSetting(int index) {
     }
     
     return noiseLevelSettings[index - 1];
+}
+
+const FiltersSetting& ChannelSettingsManager::getFiltersSetting(int index) {
+    if (index < 1) {
+        index = 1;
+    } else if (index > 16) {
+        index = 16;
+    }
+    
+    return filtersSettings[index - 1];
 }
 
 void ChannelSettingsManager::populateSaturationSettings() {
@@ -78,4 +89,23 @@ void ChannelSettingsManager::populateColourSettings() {
 
 void ChannelSettingsManager::populateNoiseSettings() {
     noiseLevelSettings = {0.0005f, 0.0006f, 0.0003f, 0.0007f, 0.0008f, 0.0004f, 0.0008f, 0.0005f, 0.0004f, 0.0005f, 0.0006f, 0.0005f, 0.0004f, 0.0008f, 0.0009f, 0.0007f};
+}
+
+void ChannelSettingsManager::populateFiltersSettings() {
+    filtersSettings[0] = { 3.0f, -12.0f};
+    filtersSettings[1] = {-6.0f, 7.0f};
+    filtersSettings[2] = { 1.0f, 15.0f};
+    filtersSettings[3] = { 5.0f, -3.0f};
+    filtersSettings[4] = {-2.0f, -10.0f};
+    filtersSettings[5] = { 0.0f, 18.0f};
+    filtersSettings[6] = { 4.0f, -7.0f};
+    filtersSettings[7] = {-1.0f, 5.0f};
+    filtersSettings[8] = { 6.0f, -14.0f};
+    filtersSettings[9] = {-3.0f, 9.0f};
+    filtersSettings[10] = {2.0f, -18.0f};
+    filtersSettings[11] = {-5.0f, 2.0f};
+    filtersSettings[12] = {0.0f, 11.0f};
+    filtersSettings[13] = {6.0f, -8.0f};
+    filtersSettings[14] = {-4.0f, 13.0f};
+    filtersSettings[15] = {1.0f, -6.0f};
 }
