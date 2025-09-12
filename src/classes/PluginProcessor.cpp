@@ -182,7 +182,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParam
     layout.add(std::make_unique<juce::AudioParameterBool>("MICMODE", "Mic Mode", false));
     layout.add(std::make_unique<juce::AudioParameterFloat>("HPFILTER", "Highpass", juce::NormalisableRange<float>(16.0f, 320.0f, 1.0f), 16.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("LPFILTER", "Lowpass", juce::NormalisableRange<float>(2500.0f, 20000.0f, 1.0f), 20000.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("OUTPUT", "Output Gain", juce::NormalisableRange<float>(-100.0f, 6.0f, 0.1f), 0.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("HIGHFREQ", "High Freq", juce::NormalisableRange<float>(2000.0f, 20000.0f, 1.0f, 0.5f), 8000.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("HIGHGAIN", "High Gain", juce::NormalisableRange<float>(-15.0f, 15.0f, 0.1f), 0.0f));
     layout.add(std::make_unique<juce::AudioParameterBool>("HIGHBELL", "High Bell", false));
@@ -193,6 +192,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParam
     layout.add(std::make_unique<juce::AudioParameterFloat>("LOWFREQ", "Low Freq", juce::NormalisableRange<float>(40.0f, 250.0f, 1.0f, 0.5f), 100.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("LOWGAIN", "Low Gain", juce::NormalisableRange<float>(-15.0f, 15.0f, 0.1f), 0.0f));
     layout.add(std::make_unique<juce::AudioParameterBool>("LOWBELL", "Low Bell", false));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OUTPUT", "Output Gain", juce::NormalisableRange<float>(-100.0f, 6.0f, 0.1f), 0.0f));
 
     return layout;
 }
@@ -243,19 +243,23 @@ void PluginProcessor::updateEQ(double sampleRate) {
     float lowQ = proportionalQ(lowGain);
 
     for (int channel = 0; channel < 2; ++channel) {
+        const EQSetting& eqSetting = (channel == 0)
+            ? channelSettingsManager.getEQSetting(leftChannel)
+            : channelSettingsManager.getEQSetting(rightChannel);
+
         if (highBell) {
-            *highEQ[channel].state = *Coeffs::makePeakFilter(sampleRate, highFreq, highQ, juce::Decibels::decibelsToGain(highGain));
+            *highEQ[channel].state = *Coeffs::makePeakFilter(sampleRate, highFreq + eqSetting.highFreqDiff, highQ + eqSetting.highQDiff, juce::Decibels::decibelsToGain(highGain + eqSetting.highGainDiff));
         } else {
-            *highEQ[channel].state = *Coeffs::makeHighShelf(sampleRate, highFreq, highQ, juce::Decibels::decibelsToGain(highGain));
+            *highEQ[channel].state = *Coeffs::makeHighShelf(sampleRate, highFreq + eqSetting.highFreqDiff, highQ + eqSetting.highQDiff, juce::Decibels::decibelsToGain(highGain + eqSetting.highGainDiff));
         }
 
-        *midHighEQ[channel].state = *Coeffs::makePeakFilter(sampleRate, midHighFreq, midHighQ, juce::Decibels::decibelsToGain(midHighGain));
-        *midLowEQ[channel].state = *Coeffs::makePeakFilter(sampleRate, midLowFreq, midLowQ, juce::Decibels::decibelsToGain(midLowGain));
+        *midHighEQ[channel].state = *Coeffs::makePeakFilter(sampleRate, midHighFreq + eqSetting.midHighFreqDiff, midHighQ + eqSetting.midHighQDiff, juce::Decibels::decibelsToGain(midHighGain + eqSetting.midHighGainDiff));
+        *midLowEQ[channel].state = *Coeffs::makePeakFilter(sampleRate, midLowFreq + eqSetting.midLowFreqDiff, midLowQ + eqSetting.midLowQDiff, juce::Decibels::decibelsToGain(midLowGain + eqSetting.midLowGainDiff));
 
         if (lowBell) {
-            *lowEQ[channel].state = *Coeffs::makePeakFilter(sampleRate, lowFreq, lowQ, juce::Decibels::decibelsToGain(lowGain));
+            *lowEQ[channel].state = *Coeffs::makePeakFilter(sampleRate, lowFreq + eqSetting.lowFreqDiff, lowQ + eqSetting.lowQDiff, juce::Decibels::decibelsToGain(lowGain + eqSetting.lowGainDiff));
         } else {
-            *lowEQ[channel].state = *Coeffs::makeLowShelf(sampleRate, lowFreq, lowQ, juce::Decibels::decibelsToGain(lowGain));
+            *lowEQ[channel].state = *Coeffs::makeLowShelf(sampleRate, lowFreq + eqSetting.lowFreqDiff, lowQ + eqSetting.lowQDiff, juce::Decibels::decibelsToGain(lowGain + eqSetting.lowGainDiff));
         }
     }
 }

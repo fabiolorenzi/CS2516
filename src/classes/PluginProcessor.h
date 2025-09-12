@@ -4,6 +4,7 @@
 #include <random>
 #include "classes/ChannelSettingsManager.h"
 #include "types/ColourSetting.h"
+#include "types/EQSetting.h"
 #include "types/FiltersSetting.h"
 #include "types/SaturationSetting.h"
 
