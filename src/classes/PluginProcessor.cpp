@@ -1,10 +1,12 @@
 #include "PluginProcessor.h"
+#include "PluginEditor.h"
 
 PluginProcessor::PluginProcessor()
     : AudioProcessor(BusesProperties()
-        .withInput("Input", juce::AudioChannelSet::stereo(), true)
-        .withOutput("Output", juce::AudioChannelSet::stereo(), true)
-    ), apvts(*this, nullptr, "Parameters", createParameterLayout()) {
+      .withInput("Input", juce::AudioChannelSet::stereo(), true)
+      .withOutput("Output", juce::AudioChannelSet::stereo(), true)
+    ),
+      apvts(*this, nullptr, "Parameters", createParameterLayout()) {
     noiseDist = std::uniform_real_distribution<float>(-1.0f, 1.0f);
 }
 
@@ -155,7 +157,7 @@ bool PluginProcessor::hasEditor() const {
 }
 
 juce::AudioProcessorEditor* PluginProcessor::createEditor() {
-    return new juce::GenericAudioProcessorEditor(*this);
+    return new PluginEditor(*this);
 }
 
 void PluginProcessor::getStateInformation(juce::MemoryBlock& destData) {
@@ -263,8 +265,6 @@ void PluginProcessor::updateEQ(double sampleRate) {
         }
     }
 }
-
-
 
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
