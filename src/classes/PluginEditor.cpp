@@ -26,8 +26,8 @@ PluginEditor::PluginEditor(PluginProcessor& pluginProcessor)
 
     addAndMakeVisible(leftChannel);
     addAndMakeVisible(rightChannel);
-    /*addAndMakeVisible(inputKnob);
-    addAndMakeVisible(micButton);
+    addAndMakeVisible(inputKnob);
+    /*addAndMakeVisible(micButton);
     addAndMakeVisible(hpKnob);
     addAndMakeVisible(lpKnob);
     addAndMakeVisible(highFreq);
@@ -72,8 +72,9 @@ void PluginEditor::resized() {
         leftChannel.setBounds(35, 0, 50, 100);
         rightChannel.setBounds(95, 0, 50, 100);
 
+        inputKnob.setBounds(40, 120, 100, 160);
+
         /*auto buttonsArea = leftArea.removeFromTop(20);
-        inputKnob.setBounds(leftArea.removeFromTop(80));
         micButton.setBounds(leftArea.removeFromTop(40));
         hpKnob.setBounds(leftArea.removeFromTop(80));
         lpKnob.setBounds(leftArea.removeFromTop(80));*/
@@ -104,10 +105,6 @@ void PluginEditor::resized() {
 
     // ==== RIGHT COLUMN (VU Meter + Fader) ====
     {
-        auto vuHeight = 50;
-        auto vuArea = rightArea.removeFromTop(vuHeight);
-        vuMeter.setBounds(vuArea.reduced(10));
-
         outputFader.setBounds(rightArea.withTrimmedTop(10).reduced(40, 10));
     }*/
 }

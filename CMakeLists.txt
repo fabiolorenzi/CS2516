@@ -43,8 +43,8 @@ target_sources(${PROJECT_NAME}
         src/classes/Knob.cpp
         src/classes/PluginEditor.cpp
         src/classes/PluginProcessor.cpp
-        src/classes/VuMeter.cpp
         src/styles/ButtonLookAndFeel.cpp
+        src/styles/KnobLookAndFeel.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
@@ -56,12 +56,12 @@ target_include_directories(${PROJECT_NAME}
         src/classes/Knob.h
         src/classes/PluginEditor.h
         src/classes/PluginProcessor.h
-        src/classes/VuMeter.h
+        src/styles/ButtonLookAndFeel.h
+        src/styles/KnobLookAndFeel.h
         src/types/ColourSetting.h
         src/types/EQSetting.h
         src/types/FiltersSetting.h
         src/types/SaturationSetting.h
-        src/styles/ButtonLookAndFeel.h
 )
 
 target_link_libraries(${PROJECT_NAME}

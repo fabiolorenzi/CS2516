@@ -36,6 +36,13 @@
             "group": "build",
             "detail": "Remove build and libs folder for a fresh restart",
             "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "Build & run",
+            "command": "cmake --build build --config Debug; ./build/CS2516_artefacts/Debug/Standalone/CS2516.exe",
+            "group": "build",
+            "detail": "Build and run dev standalone"
         }
     ]
 }

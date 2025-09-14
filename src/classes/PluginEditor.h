@@ -5,7 +5,6 @@
 #include "classes/Fader.h"
 #include "classes/FlatButton.h"
 #include "classes/Knob.h"
-#include "classes/VuMeter.h"
 
 class PluginProcessor;
 
@@ -35,7 +34,6 @@ class PluginEditor : public juce::AudioProcessorEditor {
         FlatButton highBell;
         FlatButton lowBell;
         Fader outputFader;
-        VuMeter vuMeter;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginEditor);
 };
