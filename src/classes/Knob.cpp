@@ -1,6 +1,11 @@
 #include "Knob.h"
 
-Knob::Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, const juce::String& paramID) {
+Knob::Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, const juce::String& paramID, float _minVal, float _maxVal, juce::String _unit, bool _linear) {
+    minVal = _minVal;
+    maxVal = _maxVal;
+    unit = _unit;
+    linear = _linear;
+
     label.setText(name, juce::dontSendNotification);
     label.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(label);
@@ -8,6 +13,14 @@ Knob::Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, 
     knob.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     knob.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     knob.setLookAndFeel(&knobLookAndFeel);
+
+    if (linear) {
+        knob.setRange(minVal, maxVal);
+    } else {
+        auto range = juce::NormalisableRange<double>(minVal, maxVal);
+        range.setSkewForCentre(std::sqrt(minVal * maxVal));
+        knob.setNormalisableRange(range);
+    }
 
     addAndMakeVisible(knob);
 
@@ -17,17 +30,10 @@ Knob::Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, 
 void Knob::resized() {
     auto bounds = getLocalBounds();
 
-    // Top label height
-    const int labelHeight = 20;
-    label.setBounds(bounds.removeFromTop(labelHeight));
+    label.setBounds(bounds.removeFromTop(20));
 
-    // Padding around knob for ticks/labels
-    const int padding = 10;
-
-    // Final knob face size (fixed)
     const int knobSize = 60;
 
-    // Center the knob in the remaining area
     juce::Rectangle<int> knobArea = bounds;
     juce::Rectangle<int> knobBounds(
         (knobArea.getWidth() - knobSize) / 2,
@@ -40,10 +46,7 @@ void Knob::resized() {
 }
 
 void Knob::paint(juce::Graphics& g) {
-    // Draw ticks and labels outside the knob
     const int numTicks = 6;
-    const float minVal = 0.0f;
-    const float maxVal = 24.0f;
 
     const int knobSize = 60;
     const int labelHeight = 20;
@@ -73,7 +76,7 @@ void Knob::paint(juce::Graphics& g) {
         g.drawLine({ tickStart, tickEnd }, 1.2f);
 
         if (i == 0 || i == numTicks) {
-            juce::String text = juce::String(value, 0) + "dB";
+            juce::String text = juce::String(value, 0) + unit;
 
             juce::Point<float> textPoint(0.0f, -radius - 12.0f);
             textPoint = textPoint.transformedBy(rotation) + centre;
