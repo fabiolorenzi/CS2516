@@ -30,7 +30,8 @@ Knob::Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, 
 void Knob::resized() {
     auto bounds = getLocalBounds();
 
-    label.setBounds(bounds.removeFromTop(20));
+    // label.setBounds(bounds.removeFromTop(20));
+    label.setBounds((bounds.getWidth() - 60) / 2, 25, 60, 14);
 
     const int knobSize = 60;
 
@@ -62,7 +63,12 @@ void Knob::paint(juce::Graphics& g) {
     g.setColour(juce::Colours::white);
 
     for (int i = 0; i <= numTicks; ++i) {
-        float value = juce::jmap((float)i, 0.0f, (float)numTicks, minVal, maxVal);
+        float tempValue = juce::jmap((float)i, 0.0f, (float)numTicks, minVal, maxVal);
+        float minValueFormatted = formatValue(minVal);
+        float maxValueFormatted = formatValue(maxVal);
+        juce::String unitFormatted = formatUnit(tempValue);
+
+        float value = juce::jmap((float)i, 0.0f, (float)numTicks, minValueFormatted, maxValueFormatted);
         float proportion = (float)i / (float)numTicks;
         float tickAngle = rotaryStartAngle + proportion * (rotaryEndAngle - rotaryStartAngle);
 
@@ -76,7 +82,7 @@ void Knob::paint(juce::Graphics& g) {
         g.drawLine({ tickStart, tickEnd }, 1.2f);
 
         if (i == 0 || i == numTicks) {
-            juce::String text = juce::String(value, 0) + unit;
+            juce::String text = juce::String(value, 0) + unitFormatted;
 
             juce::Point<float> textPoint(0.0f, -radius - 12.0f);
             textPoint = textPoint.transformedBy(rotation) + centre;
@@ -88,4 +94,18 @@ void Knob::paint(juce::Graphics& g) {
                 juce::Justification::centred, 1);
         }
     }
+}
+
+float Knob::formatValue(float value) {
+    if (value >= 1000) {
+        return value / 1000;
+    }
+    return value;
+}
+
+juce::String Knob::formatUnit(float value) {
+    if (value >= 1000) {
+        return "k" + unit;
+    }
+    return unit;
 }

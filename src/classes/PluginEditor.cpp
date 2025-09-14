@@ -8,8 +8,8 @@ PluginEditor::PluginEditor(PluginProcessor& pluginProcessor)
       rightChannel("Right", pluginProcessor.apvts, "RIGHTCHANNEL"),
       inputKnob("Input", pluginProcessor.apvts, "INPUT", 0.0f, 24.0f, "dB", true),
       micButton("Mic", pluginProcessor.apvts, "MICMODE"),
-      hpKnob("HP", pluginProcessor.apvts, "HPFILTER", 0.0f, 24.0f, "dB", true),
-      lpKnob("LP", pluginProcessor.apvts, "LPFILTER", 0.0f, 24.0f, "dB", true),
+      hpKnob("HP", pluginProcessor.apvts, "HPFILTER", 16.0f, 320.0f, "hz", false),
+      lpKnob("LP", pluginProcessor.apvts, "LPFILTER", 2500.0f, 20000.0f, "hz", false),
       highFreq("High Freq", pluginProcessor.apvts, "HIGHFREQ", 0.0f, 24.0f, "dB", true),
       highGain("High Gain", pluginProcessor.apvts, "HIGHGAIN", 0.0f, 24.0f, "dB", true),
       midHighFreq("MidHigh Freq", pluginProcessor.apvts, "MIDHIGHFREQ", 0.0f, 24.0f, "dB", true),
@@ -27,10 +27,10 @@ PluginEditor::PluginEditor(PluginProcessor& pluginProcessor)
     addAndMakeVisible(leftChannel);
     addAndMakeVisible(rightChannel);
     addAndMakeVisible(inputKnob);
-    /*addAndMakeVisible(micButton);
+    //addAndMakeVisible(micButton);
     addAndMakeVisible(hpKnob);
     addAndMakeVisible(lpKnob);
-    addAndMakeVisible(highFreq);
+    /*addAndMakeVisible(highFreq);
     addAndMakeVisible(highGain);
     addAndMakeVisible(midHighFreq);
     addAndMakeVisible(midHighGain);
@@ -73,6 +73,9 @@ void PluginEditor::resized() {
         rightChannel.setBounds(95, 0, 50, 100);
 
         inputKnob.setBounds(40, 120, 100, 160);
+
+        hpKnob.setBounds(40, 230, 100, 160);
+        lpKnob.setBounds(40, 340, 100, 160);
 
         /*auto buttonsArea = leftArea.removeFromTop(20);
         micButton.setBounds(leftArea.removeFromTop(40));

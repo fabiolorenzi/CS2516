@@ -31,6 +31,6 @@ void KnobLookAndFeel::drawRotarySlider(juce::Graphics& graphics, int x, int y, i
     auto pointerThickness = 2.0f;
     p.addRectangle(-pointerThickness * 0.5f, -knobBounds.getHeight() / 2.5f, pointerThickness, pointerLength);
 
-    graphics.setColour(juce::Colours::limegreen);
+    graphics.setColour(juce::Colours::whitesmoke);
     graphics.fillPath(p, juce::AffineTransform::rotation(angle).translated(knobBounds.getCentreX(), knobBounds.getCentreY()));
 }

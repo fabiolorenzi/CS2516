@@ -18,4 +18,7 @@ class Knob : public juce::Component {
         juce::Slider knob;
         std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attachment;
         KnobLookAndFeel knobLookAndFeel;
+
+        float formatValue(float value);
+        juce::String formatUnit(float value);
 };
