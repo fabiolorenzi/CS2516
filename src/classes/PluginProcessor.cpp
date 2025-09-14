@@ -184,8 +184,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParam
     layout.add(std::make_unique<juce::AudioParameterInt>("RIGHTCHANNEL", "Right Preset", 1, 16, 1));
     layout.add(std::make_unique<juce::AudioParameterFloat>("INPUT", "Input Gain", juce::NormalisableRange<float>(0.0f, 24.0f, 0.1f), 0.0f));
     layout.add(std::make_unique<juce::AudioParameterBool>("MICMODE", "Mic Mode", false));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("HPFILTER", "Highpass", juce::NormalisableRange<float>(16.0f, 320.0f, 1.0f), 16.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("LPFILTER", "Lowpass", juce::NormalisableRange<float>(2500.0f, 20000.0f, 1.0f), 20000.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("HPFILTER", "Highpass", juce::NormalisableRange<float>(16.0f, 320.0f, 0.5f), 16.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("LPFILTER", "Lowpass", juce::NormalisableRange<float>(2500.0f, 20000.0f, 0.5f), 20000.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("HIGHFREQ", "High Freq", juce::NormalisableRange<float>(2000.0f, 20000.0f, 1.0f, 0.5f), 8000.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("HIGHGAIN", "High Gain", juce::NormalisableRange<float>(-15.0f, 15.0f, 0.1f), 0.0f));
     layout.add(std::make_unique<juce::AudioParameterBool>("HIGHBELL", "High Bell", false));

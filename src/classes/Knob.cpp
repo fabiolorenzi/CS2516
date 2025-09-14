@@ -1,10 +1,9 @@
 #include "Knob.h"
 
-Knob::Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, const juce::String& paramID, float _minVal, float _maxVal, juce::String _unit, bool _linear) {
+Knob::Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, const juce::String& paramID, float _minVal, float _maxVal, juce::String _unit) {
     minVal = _minVal;
     maxVal = _maxVal;
     unit = _unit;
-    linear = _linear;
 
     label.setText(name, juce::dontSendNotification);
     label.setJustificationType(juce::Justification::centred);
@@ -13,14 +12,7 @@ Knob::Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, 
     knob.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     knob.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     knob.setLookAndFeel(&knobLookAndFeel);
-
-    if (linear) {
-        knob.setRange(minVal, maxVal);
-    } else {
-        auto range = juce::NormalisableRange<double>(minVal, maxVal);
-        range.setSkewForCentre(std::sqrt(minVal * maxVal));
-        knob.setNormalisableRange(range);
-    }
+    knob.setPopupDisplayEnabled(true, false, this);
 
     addAndMakeVisible(knob);
 
@@ -30,7 +22,6 @@ Knob::Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, 
 void Knob::resized() {
     auto bounds = getLocalBounds();
 
-    // label.setBounds(bounds.removeFromTop(20));
     label.setBounds((bounds.getWidth() - 60) / 2, 25, 60, 14);
 
     const int knobSize = 60;
