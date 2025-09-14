@@ -186,14 +186,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParam
     layout.add(std::make_unique<juce::AudioParameterBool>("MICMODE", "Mic Mode", false));
     layout.add(std::make_unique<juce::AudioParameterFloat>("HPFILTER", "Highpass", juce::NormalisableRange<float>(16.0f, 320.0f, 0.5f), 16.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("LPFILTER", "Lowpass", juce::NormalisableRange<float>(2500.0f, 20000.0f, 0.5f), 20000.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("HIGHFREQ", "High Freq", juce::NormalisableRange<float>(2000.0f, 20000.0f, 1.0f, 0.5f), 8000.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("HIGHFREQ", "High Freq", juce::NormalisableRange<float>(2000.0f, 20000.0f, 1.0f, 0.5f), 6500.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("HIGHGAIN", "High Gain", juce::NormalisableRange<float>(-15.0f, 15.0f, 0.1f), 0.0f));
     layout.add(std::make_unique<juce::AudioParameterBool>("HIGHBELL", "High Bell", false));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("MIDHIGHFREQ", "Mid-High Freq", juce::NormalisableRange<float>(800.0f, 8000.0f, 1.0f, 0.5f), 2000.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("MIDHIGHFREQ", "Mid-High Freq", juce::NormalisableRange<float>(800.0f, 8000.0f, 1.0f, 0.5f), 2600.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("MIDHIGHGAIN", "Mid-High Gain", juce::NormalisableRange<float>(-15.0f, 15.0f, 0.1f), 0.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("MIDLOWFREQ", "Mid-Low Freq", juce::NormalisableRange<float>(150.0f, 2500.0f, 1.0f, 0.5f), 500.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("MIDLOWFREQ", "Mid-Low Freq", juce::NormalisableRange<float>(150.0f, 2500.0f, 1.0f, 0.5f), 750.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("MIDLOWGAIN", "Mid-Low Gain", juce::NormalisableRange<float>(-15.0f, 15.0f, 0.1f), 0.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("LOWFREQ", "Low Freq", juce::NormalisableRange<float>(40.0f, 250.0f, 1.0f, 0.5f), 100.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("LOWFREQ", "Low Freq", juce::NormalisableRange<float>(40.0f, 250.0f, 1.0f, 0.5f), 93.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("LOWGAIN", "Low Gain", juce::NormalisableRange<float>(-15.0f, 15.0f, 0.1f), 0.0f));
     layout.add(std::make_unique<juce::AudioParameterBool>("LOWBELL", "Low Bell", false));
     layout.add(std::make_unique<juce::AudioParameterFloat>("OUTPUT", "Output Gain", juce::NormalisableRange<float>(-100.0f, 6.0f, 0.1f), 0.0f));

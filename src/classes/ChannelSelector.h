@@ -1,7 +1,13 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "styles/ButtonLookAndFeel.h"
+
+struct ButtonLookAndFeel : public juce::LookAndFeel_V4 {
+    public:
+        ButtonLookAndFeel() = default;
+        ~ButtonLookAndFeel() override = default;
+        void drawButtonBackground(juce::Graphics& graphics, juce::Button& b, const juce::Colour& backgroundColour, bool isMouseOverButton, bool isButtonDown) override;
+};
 
 class ChannelSelector : public juce::Component {
     public:

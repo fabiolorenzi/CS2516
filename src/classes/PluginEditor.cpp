@@ -6,18 +6,18 @@ PluginEditor::PluginEditor(PluginProcessor& pluginProcessor)
       pluginProcessor(pluginProcessor),
       leftChannel("Left", pluginProcessor.apvts, "LEFTCHANNEL"),
       rightChannel("Right", pluginProcessor.apvts, "RIGHTCHANNEL"),
-      inputKnob("Input", pluginProcessor.apvts, "INPUT", 0.0f, 24.0f, "dB"),
+      inputKnob("Input", pluginProcessor.apvts, "INPUT", 0.0f, 24.0f, "dB", juce::Colours::grey),
       micButton("Mic", pluginProcessor.apvts, "MICMODE"),
-      hpKnob("HP", pluginProcessor.apvts, "HPFILTER", 16.0f, 320.0f, "hz"),
-      lpKnob("LP", pluginProcessor.apvts, "LPFILTER", 2500.0f, 20000.0f, "hz"),
-      highFreq("High Freq", pluginProcessor.apvts, "HIGHFREQ", 0.0f, 24.0f, "dB"),
-      highGain("High Gain", pluginProcessor.apvts, "HIGHGAIN", 0.0f, 24.0f, "dB"),
-      midHighFreq("MidHigh Freq", pluginProcessor.apvts, "MIDHIGHFREQ", 0.0f, 24.0f, "dB"),
-      midHighGain("MidHigh Gain", pluginProcessor.apvts, "MIDHIGHGAIN", 0.0f, 24.0f, "dB"),
-      midLowFreq("MidLow Freq", pluginProcessor.apvts, "MIDLOWFREQ", 0.0f, 24.0f, "dB"),
-      midLowGain("MidLow Gain", pluginProcessor.apvts, "MIDLOWGAIN", 0.0f, 24.0f, "dB"),
-      lowFreq("Low Freq", pluginProcessor.apvts, "LOWFREQ", 0.0f, 24.0f, "dB"),
-      lowGain("Low Gain", pluginProcessor.apvts, "LOWGAIN", 0.0f, 24.0f, "dB"),
+      hpKnob("HP", pluginProcessor.apvts, "HPFILTER", 16.0f, 320.0f, "Hz", juce::Colours::grey),
+      lpKnob("LP", pluginProcessor.apvts, "LPFILTER", 2500.0f, 20000.0f, "Hz", juce::Colours::grey),
+      highFreq("High", pluginProcessor.apvts, "HIGHFREQ", 2000.0f, 20000.0f, "Hz", juce::Colours::blue),
+      highGain("", pluginProcessor.apvts, "HIGHGAIN", -15.0f, 15.0f, "dB", juce::Colours::blue),
+      midHighFreq("Mid High", pluginProcessor.apvts, "MIDHIGHFREQ", 800.0f, 8000.0f, "Hz", juce::Colours::turquoise),
+      midHighGain("", pluginProcessor.apvts, "MIDHIGHGAIN", -15.0f, 15.0f, "dB", juce::Colours::turquoise),
+      midLowFreq("Mid Low", pluginProcessor.apvts, "MIDLOWFREQ", 150.0f, 2500.0f, "Hz", juce::Colours::orange),
+      midLowGain("", pluginProcessor.apvts, "MIDLOWGAIN", -15.0f, 15.0f, "dB", juce::Colours::orange),
+      lowFreq("Low", pluginProcessor.apvts, "LOWFREQ", 40.0f, 250.0f, "Hz", juce::Colours::red),
+      lowGain("", pluginProcessor.apvts, "LOWGAIN", -15.0f, 15.0f, "dB", juce::Colours::red),
       highBell("High Bell", pluginProcessor.apvts, "HIGHBELL"),
       lowBell("Low Bell", pluginProcessor.apvts, "LOWBELL"),
       outputFader("Output", pluginProcessor.apvts, "OUTPUT")
@@ -30,7 +30,7 @@ PluginEditor::PluginEditor(PluginProcessor& pluginProcessor)
     //addAndMakeVisible(micButton);
     addAndMakeVisible(hpKnob);
     addAndMakeVisible(lpKnob);
-    /*addAndMakeVisible(highFreq);
+    addAndMakeVisible(highFreq);
     addAndMakeVisible(highGain);
     addAndMakeVisible(midHighFreq);
     addAndMakeVisible(midHighGain);
@@ -39,9 +39,8 @@ PluginEditor::PluginEditor(PluginProcessor& pluginProcessor)
     addAndMakeVisible(lowFreq);
     addAndMakeVisible(lowGain);
     addAndMakeVisible(highBell);
-    addAndMakeVisible(lowBell);
-    addAndMakeVisible(outputFader);
-    addAndMakeVisible(vuMeter);*/
+    //addAndMakeVisible(lowBell);
+    //addAndMakeVisible(outputFader);
 }
 
 PluginEditor::~PluginEditor() = default;
@@ -84,30 +83,19 @@ void PluginEditor::resized() {
     }
 
     // ==== MIDDLE COLUMN (Vertical EQ) ====
-    /*{
-        int knobHeight = 50;
-        int spacing = 10;
-        int y = 0;
-
-        auto placeKnob = [&](juce::Component& comp) {
-            comp.setBounds(10, y, midArea.getWidth() - 20, knobHeight);
-            y += knobHeight + spacing;
-        };
-
-        placeKnob(highFreq);
-        placeKnob(highBell);
-        placeKnob(highGain);
-        placeKnob(midHighFreq);
-        placeKnob(midHighGain);
-        placeKnob(midLowFreq);
-        placeKnob(midLowGain);
-        placeKnob(lowFreq);
-        placeKnob(lowGain);
-        placeKnob(lowBell);
+    {
+        highFreq.setBounds(185, -15, 100, 160);
+        highGain.setBounds(265, 35, 100, 160);
+        midHighFreq.setBounds(185, 95, 100, 160);
+        midHighGain.setBounds(265, 145, 100, 160);
+        midLowFreq.setBounds(185, 205, 100, 160);
+        midLowGain.setBounds(265, 255, 100, 160);
+        lowFreq.setBounds(185, 315, 100, 160);
+        lowGain.setBounds(265, 365, 100, 160);
     }
 
-    // ==== RIGHT COLUMN (VU Meter + Fader) ====
-    {
+    // ==== RIGHT COLUMN (Fader) ====
+    /*{
         outputFader.setBounds(rightArea.withTrimmedTop(10).reduced(40, 10));
     }*/
 }
