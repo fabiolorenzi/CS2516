@@ -48,6 +48,17 @@ PluginEditor::~PluginEditor() = default;
 
 void PluginEditor::paint(juce::Graphics& graphics) {
     graphics.fillAll(juce::Colours::darkgrey);
+
+    auto area = getLocalBounds();
+
+    auto leftArea = area.removeFromLeft(184);
+    auto midArea = area.removeFromLeft(184);
+    auto rightArea = area;
+
+    graphics.setColour(juce::Colours::grey);
+    graphics.drawRect(leftArea, 2);
+    graphics.drawRect(midArea, 2);
+    graphics.drawRect(rightArea, 2);
 }
 
 void PluginEditor::resized() {
@@ -58,9 +69,8 @@ void PluginEditor::resized() {
     auto rightArea = area;
 
     {
-        auto top = leftArea.removeFromTop(60);
-        leftChannel.setBounds(20, 0, 50, 100);
-        rightChannel.setBounds(90, 0, 50, 100);
+        leftChannel.setBounds(35, 0, 50, 100);
+        rightChannel.setBounds(95, 0, 50, 100);
 
         /*auto buttonsArea = leftArea.removeFromTop(20);
         inputKnob.setBounds(leftArea.removeFromTop(80));
