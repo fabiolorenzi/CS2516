@@ -13,6 +13,9 @@ ChannelSelector::ChannelSelector(const juce::String& name, juce::AudioProcessorV
     addAndMakeVisible(decButton);
     addAndMakeVisible(incButton);
 
+    decButton.setLookAndFeel(&buttonLookAndFeel);
+    incButton.setLookAndFeel(&buttonLookAndFeel);
+
     if (auto* param = state.getParameter(paramID)) {
         attachment = std::make_unique<juce::ParameterAttachment>(*param, [this, param](float) {
             valueLabel.setText(param->getCurrentValueAsText(), juce::dontSendNotification);

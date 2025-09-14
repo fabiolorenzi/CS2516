@@ -44,6 +44,7 @@ target_sources(${PROJECT_NAME}
         src/classes/PluginEditor.cpp
         src/classes/PluginProcessor.cpp
         src/classes/VuMeter.cpp
+        src/styles/ButtonLookAndFeel.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
@@ -60,6 +61,7 @@ target_include_directories(${PROJECT_NAME}
         src/types/EQSetting.h
         src/types/FiltersSetting.h
         src/types/SaturationSetting.h
+        src/styles/ButtonLookAndFeel.h
 )
 
 target_link_libraries(${PROJECT_NAME}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "styles/ButtonLookAndFeel.h"
 
 class ChannelSelector : public juce::Component {
     public:
@@ -13,6 +14,6 @@ class ChannelSelector : public juce::Component {
         juce::TextButton decButton {"-"};
         juce::TextButton incButton {"+"};
         std::unique_ptr<juce::ParameterAttachment> attachment;
-        
-        void updateValue();
+
+        ButtonLookAndFeel buttonLookAndFeel;
 };
