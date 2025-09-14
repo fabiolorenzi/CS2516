@@ -37,10 +37,10 @@ ChannelSelector::ChannelSelector(const juce::String& name, juce::AudioProcessorV
 
 void ChannelSelector::resized() {
     auto area = getLocalBounds();
-    label.setBounds(area.getCentreX() - (40 / 2) - 1, 5, 40, 15);
+    label.setBounds(area.getCentreX() - 21, 10, 40, 15);
 
-    valueLabel.setBounds(4, 25, 40, 35);
+    valueLabel.setBounds(4, 30, 40, 35);
 
-    decButton.setBounds(3, 64, 20, 20);
-    incButton.setBounds(25, 64, 20, 20);
+    decButton.setBounds(3, 69, 20, 20);
+    incButton.setBounds(25, 69, 20, 20);
 }
