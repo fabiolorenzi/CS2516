@@ -26,7 +26,7 @@ PluginEditor::PluginEditor(PluginProcessor& pluginProcessor)
 
     addAndMakeVisible(leftChannel);
     addAndMakeVisible(rightChannel);
-    addAndMakeVisible(inputKnob);
+    /*addAndMakeVisible(inputKnob);
     addAndMakeVisible(micButton);
     addAndMakeVisible(hpKnob);
     addAndMakeVisible(lpKnob);
@@ -41,7 +41,7 @@ PluginEditor::PluginEditor(PluginProcessor& pluginProcessor)
     addAndMakeVisible(highBell);
     addAndMakeVisible(lowBell);
     addAndMakeVisible(outputFader);
-    addAndMakeVisible(vuMeter);
+    addAndMakeVisible(vuMeter);*/
 }
 
 PluginEditor::~PluginEditor() = default;
@@ -57,31 +57,47 @@ void PluginEditor::resized() {
     auto midArea = area.removeFromLeft(184);
     auto rightArea = area;
 
-    auto top = leftArea.removeFromTop(100);
-    leftChannel.setBounds(top.removeFromLeft(90));
-    rightChannel.setBounds(top);
+    {
+        auto top = leftArea.removeFromTop(60);
+        leftChannel.setBounds(20, 0, 50, 100);
+        rightChannel.setBounds(90, 0, 50, 100);
 
-    auto next = leftArea.removeFromTop(200);
-    inputKnob.setBounds(next.removeFromTop(100));
-    micButton.setBounds(next.removeFromTop(50));
-    hpKnob.setBounds(next.removeFromTop(100));
-    lpKnob.setBounds(next);
+        /*auto buttonsArea = leftArea.removeFromTop(20);
+        inputKnob.setBounds(leftArea.removeFromTop(80));
+        micButton.setBounds(leftArea.removeFromTop(40));
+        hpKnob.setBounds(leftArea.removeFromTop(80));
+        lpKnob.setBounds(leftArea.removeFromTop(80));*/
+    }
 
-    auto eqGrid = juce::Grid();
-    eqGrid.templateRows = { juce::Grid::TrackInfo(juce::Grid::Fr(1)), juce::Grid::TrackInfo(juce::Grid::Fr(1)), juce::Grid::TrackInfo(juce::Grid::Fr(1)) };
-    eqGrid.templateColumns = { juce::Grid::TrackInfo(juce::Grid::Fr(1)), juce::Grid::TrackInfo(juce::Grid::Fr(1)) };
+    // ==== MIDDLE COLUMN (Vertical EQ) ====
+    /*{
+        int knobHeight = 50;
+        int spacing = 10;
+        int y = 0;
 
-    eqGrid.items = {
-        juce::GridItem(highFreq), juce::GridItem(highBell),
-        juce::GridItem(highGain), juce::GridItem(midHighFreq),
-        juce::GridItem(midHighGain), juce::GridItem(midLowFreq),
-        juce::GridItem(midLowGain), juce::GridItem(lowFreq),
-        juce::GridItem(lowGain), juce::GridItem(lowBell)
-    };
+        auto placeKnob = [&](juce::Component& comp) {
+            comp.setBounds(10, y, midArea.getWidth() - 20, knobHeight);
+            y += knobHeight + spacing;
+        };
 
-    eqGrid.performLayout(midArea);
+        placeKnob(highFreq);
+        placeKnob(highBell);
+        placeKnob(highGain);
+        placeKnob(midHighFreq);
+        placeKnob(midHighGain);
+        placeKnob(midLowFreq);
+        placeKnob(midLowGain);
+        placeKnob(lowFreq);
+        placeKnob(lowGain);
+        placeKnob(lowBell);
+    }
 
-    auto topOut = rightArea.removeFromTop(400);
-    outputFader.setBounds(topOut.removeFromLeft(90));
-    vuMeter.setBounds(topOut);
+    // ==== RIGHT COLUMN (VU Meter + Fader) ====
+    {
+        auto vuHeight = 50;
+        auto vuArea = rightArea.removeFromTop(vuHeight);
+        vuMeter.setBounds(vuArea.reduced(10));
+
+        outputFader.setBounds(rightArea.withTrimmedTop(10).reduced(40, 10));
+    }*/
 }
