@@ -38,8 +38,8 @@ target_sources(${PROJECT_NAME}
     PRIVATE
         src/classes/ChannelSelector.cpp
         src/classes/ChannelSettingsManager.cpp
-        src/classes/CustomButton.cpp
         src/classes/Fader.cpp
+        src/classes/FlatButton.cpp
         src/classes/Knob.cpp
         src/classes/PluginEditor.cpp
         src/classes/PluginProcessor.cpp
@@ -50,9 +50,9 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         src/classes/ChannelSelector.h
         src/classes/ChannelSettingsManager.h
-        src/classes/CustomButton.h
-        src/classes/Knob.h
         src/classes/Fader.h
+        src/classes/FlatButton.h
+        src/classes/Knob.h
         src/classes/PluginEditor.h
         src/classes/PluginProcessor.h
         src/classes/VuMeter.h

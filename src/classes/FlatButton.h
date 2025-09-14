@@ -2,9 +2,9 @@
 
 #include <JuceHeader.h>
 
-class CustomButton : public juce::Component {
+class FlatButton : public juce::Component {
     public:
-        CustomButton(const juce::String& name, juce::AudioProcessorValueTreeState& state, const juce::String& paramID);
+        FlatButton(const juce::String& name, juce::AudioProcessorValueTreeState& state, const juce::String& paramID);
         void resized() override;
     
     private:

@@ -2,8 +2,8 @@
 
 #include <JuceHeader.h>
 #include "classes/ChannelSelector.h"
-#include "classes/CustomButton.h"
 #include "classes/Fader.h"
+#include "classes/FlatButton.h"
 #include "classes/Knob.h"
 #include "classes/VuMeter.h"
 
@@ -21,7 +21,7 @@ class PluginEditor : public juce::AudioProcessorEditor {
         ChannelSelector leftChannel;
         ChannelSelector rightChannel;
         Knob inputKnob;
-        CustomButton micButton;
+        FlatButton micButton;
         Knob hpKnob;
         Knob lpKnob;
         Knob highFreq;
@@ -32,8 +32,8 @@ class PluginEditor : public juce::AudioProcessorEditor {
         Knob midLowGain;
         Knob lowFreq;
         Knob lowGain;
-        CustomButton highBell;
-        CustomButton lowBell;
+        FlatButton highBell;
+        FlatButton lowBell;
         Fader outputFader;
         VuMeter vuMeter;
 
