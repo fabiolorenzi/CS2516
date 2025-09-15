@@ -13,7 +13,7 @@ struct KnobLookAndFeel : public juce::LookAndFeel_V4 {
 
 class Knob : public juce::Component {
     public:
-        Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, const juce::String& paramID, float _minValue, float _maxValue, juce::String _unit, juce::Colour knobColour);
+        Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, const juce::String& paramID, float _minValue, float _maxValue, juce::String _unit, juce::Colour knobColour, juce::Component* parent);
         void resized() override;
         void paint(juce::Graphics& g) override;
     

@@ -32,7 +32,7 @@ void KnobLookAndFeel::drawRotarySlider(juce::Graphics& graphics, int x, int y, i
     graphics.fillPath(p, juce::AffineTransform::rotation(angle).translated(knobBounds.getCentreX(), knobBounds.getCentreY()));
 }
 
-Knob::Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, const juce::String& paramID, float _minVal, float _maxVal, juce::String _unit, juce::Colour knobColour) {
+Knob::Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, const juce::String& paramID, float _minVal, float _maxVal, juce::String _unit, juce::Colour knobColour, juce::Component* parent) {
     minVal = _minVal;
     maxVal = _maxVal;
     unit = _unit;
@@ -46,7 +46,7 @@ Knob::Knob(const juce::String& name, juce::AudioProcessorValueTreeState& state, 
     knob.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     knob.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     knob.setLookAndFeel(&knobLookAndFeel);
-    knob.setPopupDisplayEnabled(true, false, this);
+    knob.setPopupDisplayEnabled(true, false, parent);
 
     addAndMakeVisible(knob);
 
