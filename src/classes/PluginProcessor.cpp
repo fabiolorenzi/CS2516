@@ -196,7 +196,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParam
     layout.add(std::make_unique<juce::AudioParameterFloat>("LOWFREQ", "Low Freq", juce::NormalisableRange<float>(40.0f, 250.0f, 1.0f, 0.5f), 93.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("LOWGAIN", "Low Gain", juce::NormalisableRange<float>(-15.0f, 15.0f, 0.1f), 0.0f));
     layout.add(std::make_unique<juce::AudioParameterBool>("LOWBELL", "Low Bell", false));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("OUTPUT", "Output Gain", juce::NormalisableRange<float>(-100.0f, 6.0f, 0.1f), 0.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("OUTPUT", "Output Gain", juce::NormalisableRange<float>(-100.0f, 6.0f, 0.1f, 3.0f), 0.0f));
 
     return layout;
 }

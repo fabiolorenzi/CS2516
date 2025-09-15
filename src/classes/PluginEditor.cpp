@@ -90,5 +90,5 @@ void PluginEditor::resized() {
     lowBell.setBounds(218, 448, 35, 20);
 
     // Right section
-    //outputFader.setBounds(rightArea.withTrimmedTop(10).reduced(40, 10));
+    outputFader.setBounds(400, 100, 120, 400);
 }
