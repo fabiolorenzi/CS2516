@@ -167,14 +167,12 @@ void PluginProcessor::getStateInformation(juce::MemoryBlock& destData) {
 }
 
 void PluginProcessor::setStateInformation(const void* data, int sizeInBytes) {
-    #ifndef JucePlugin_Build_VST
     if (data != nullptr && sizeInBytes > 0) {
         std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
         if (xmlState != nullptr && xmlState->hasTagName(apvts.state.getType())) {
             apvts.replaceState(juce::ValueTree::fromXml(*xmlState));
         }
     }
-    #endif
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParameterLayout() {
