@@ -46,7 +46,16 @@ PluginEditor::PluginEditor(PluginProcessor& pluginProcessor)
 PluginEditor::~PluginEditor() = default;
 
 void PluginEditor::paint(juce::Graphics& graphics) {
-    graphics.fillAll(juce::Colours::darkgrey);
+    juce::ColourGradient backgroundGradient(
+        juce::Colours::darkgrey.brighter(0.1f),
+        getWidth() / 2.0f, 0.0f,
+        juce::Colours::darkgrey.darker(0.5f),
+        getWidth() / 2.0f, (float)getHeight(),
+        false
+    );
+
+    graphics.setGradientFill(backgroundGradient);
+    graphics.fillAll();
 
     auto area = getLocalBounds();
 
@@ -58,6 +67,10 @@ void PluginEditor::paint(juce::Graphics& graphics) {
     graphics.drawRect(leftArea, 2);
     graphics.drawRect(midArea, 2);
     graphics.drawRect(rightArea, 2);
+
+    graphics.setColour(juce::Colours::whitesmoke);
+    graphics.setFont(juce::Font(16.0f, juce::Font::bold));
+    graphics.drawText("CS2516  ", getLocalBounds().removeFromTop(30).removeFromRight(140), juce::Justification::centredRight, false);
 }
 
 void PluginEditor::resized() {
