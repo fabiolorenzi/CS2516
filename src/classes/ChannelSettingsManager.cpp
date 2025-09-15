@@ -103,39 +103,39 @@ void ChannelSettingsManager::populateNoiseSettings() {
 }
 
 void ChannelSettingsManager::populateFiltersSettings() {
-    filtersSettings[0] = {3.0f, -12.0f};
-    filtersSettings[1] = {-6.0f, 7.0f};
+    filtersSettings[0] = {0.0f, -12.0f};
+    filtersSettings[1] = {-1.0f, 7.0f};
     filtersSettings[2] = {1.0f, 15.0f};
-    filtersSettings[3] = {5.0f, -3.0f};
+    filtersSettings[3] = {0.0f, -3.0f};
     filtersSettings[4] = {-2.0f, -10.0f};
     filtersSettings[5] = {0.0f, 18.0f};
-    filtersSettings[6] = {4.0f, -7.0f};
+    filtersSettings[6] = {2.0f, -7.0f};
     filtersSettings[7] = {-1.0f, 5.0f};
-    filtersSettings[8] = {6.0f, -14.0f};
-    filtersSettings[9] = {-3.0f, 9.0f};
-    filtersSettings[10] = {2.0f, -18.0f};
-    filtersSettings[11] = {-5.0f, 2.0f};
+    filtersSettings[8] = {2.0f, -14.0f};
+    filtersSettings[9] = {-1.0f, 9.0f};
+    filtersSettings[10] = {0.0f, -18.0f};
+    filtersSettings[11] = {-1.0f, 2.0f};
     filtersSettings[12] = {0.0f, 11.0f};
-    filtersSettings[13] = {6.0f, -8.0f};
-    filtersSettings[14] = {-4.0f, 13.0f};
+    filtersSettings[13] = {1.0f, -8.0f};
+    filtersSettings[14] = {-2.0f, 13.0f};
     filtersSettings[15] = {1.0f, -6.0f};
 }
 
 void ChannelSettingsManager::populateEQSettings() {
-    eqSettings[0] = {3.0f, 0.3f, -0.15f, -5.0f, 0.4f, -0.15f, 12.0f, 0.0f, -0.15f, 20.0f, -0.6f, -0.15f};
-    eqSettings[1] = {-2.0f, -0.5f, 0.45f, 7.0f, -0.2f, -0.05f, -24.0f, 0.1f, 0.25f, 30.0f, 0.7f, -0.15f};
-    eqSettings[2] = {5.0f, 0.0f, 0.5f, -3.0f, -0.5f, -0.15f, 18.0f, -0.2f, 0.1f, -10.0f, 0.0f, 0.35f};
-    eqSettings[3] = {-1.0f, 0.4f, -0.05f, 2.0f, 0.3f, 0.15f, -11.0f, -0.15f, 0.05f, 8.0f, -0.4f, -0.15f};
-    eqSettings[4] = {0.0f, -0.1f, 0.4f, -6.0f, 0.5f, -0.15f, 9.0f, 0.0f, -0.15f, 15.0f, 0.2f, -0.15f};
-    eqSettings[5] = {4.0f, 0.2f, 0.25f, -8.0f, -0.4f, -0.15f, -20.0f, 0.4f, 0.05f, 5.0f, 0.6f, 0.0f};
-    eqSettings[6] = {-5.0f, -0.3f, -0.15f, 10.0f, 0.2f, 0.5f, 7.0f, -0.5f, -0.15f, 40.0f, -0.7f, -0.05f};
-    eqSettings[7] = {2.0f, 0.1f, 0.05f, -9.0f, 0.0f, -0.15f, -15.0f, -0.2f, 0.25f, -25.0f, 0.3f, 0.15f};
-    eqSettings[8] = {-4.0f, 0.5f, -0.15f, 0.0f, -0.1f, 0.35f, 25.0f, 0.1f, -0.05f, -12.0f, -0.5f, 0.05f};
-    eqSettings[9] = {1.0f, -0.2f, 0.1f, -4.0f, 0.4f, 0.0f, -8.0f, -0.4f, 0.3f, 18.0f, 0.7f, -0.15f};
-    eqSettings[10] = {0.0f, -0.4f, -0.15f, 6.0f, 0.5f, 0.05f, -3.0f, 0.3f, -0.15f, -7.0f, 0.1f, 0.25f};
-    eqSettings[11] = {-3.0f, 0.2f, 0.45f, -2.0f, -0.3f, -0.15f, 14.0f, -0.1f, 0.15f, 22.0f, -0.6f, 0.5f};
-    eqSettings[12] = {5.0f, 0.0f, 0.0f, -1.0f, 0.2f, -0.15f, -6.0f, 0.0f, -0.15f, -14.0f, 0.4f, -0.1f};
-    eqSettings[13] = {0.0f, -0.5f, 0.35f, 9.0f, -0.2f, 0.15f, 19.0f, -0.1f, 0.1f, -35.0f, 0.5f, 0.2f};
-    eqSettings[14] = {-2.0f, 0.1f, -0.15f, 4.0f, 0.3f, 0.25f, 11.0f, 0.2f, -0.05f, 28.0f, -0.3f, -0.15f};
-    eqSettings[15] = {3.0f, -0.3f, 0.05f, -7.0f, -0.4f, -0.15f, -17.0f, 0.5f, 0.2f, -5.0f, 0.0f, 0.3f};
+    eqSettings[0] = {1.0f, 0.1f, -0.15f, -2.0f, 0.4f, -0.15f, 12.0f, 0.0f, -0.15f, 20.0f, -0.6f, -0.15f};
+    eqSettings[1] = {-2.0f, -0.1f, 0.45f, 2.0f, -0.2f, -0.05f, -24.0f, 0.1f, 0.25f, 30.0f, 0.7f, -0.15f};
+    eqSettings[2] = {1.0f, 0.0f, 0.5f, -1.0f, -0.5f, -0.15f, 18.0f, -0.2f, 0.1f, -10.0f, 0.0f, 0.35f};
+    eqSettings[3] = {-1.0f, 0.1f, -0.05f, 2.0f, 0.3f, 0.15f, -11.0f, -0.15f, 0.05f, 8.0f, -0.4f, -0.15f};
+    eqSettings[4] = {0.0f, -0.1f, 0.4f, -2.0f, 0.5f, -0.15f, 9.0f, 0.0f, -0.15f, 15.0f, 0.2f, -0.15f};
+    eqSettings[5] = {1.0f, 0.1f, 0.25f, -2.0f, -0.4f, -0.15f, -20.0f, 0.4f, 0.05f, 5.0f, 0.6f, 0.0f};
+    eqSettings[6] = {-1.0f, -0.1f, -0.15f, 1.0f, 0.2f, 0.5f, 7.0f, -0.5f, -0.15f, 40.0f, -0.7f, -0.05f};
+    eqSettings[7] = {1.0f, 0.1f, 0.05f, -1.0f, 0.0f, -0.15f, -15.0f, -0.2f, 0.25f, -25.0f, 0.3f, 0.15f};
+    eqSettings[8] = {-1.0f, 0.1f, -0.15f, 0.0f, -0.1f, 0.35f, 25.0f, 0.1f, -0.05f, -12.0f, -0.5f, 0.05f};
+    eqSettings[9] = {1.0f, -0.1f, 0.1f, -2.0f, 0.4f, 0.0f, -8.0f, -0.4f, 0.3f, 18.0f, 0.7f, -0.15f};
+    eqSettings[10] = {0.0f, -0.1f, -0.15f, 2.0f, 0.5f, 0.05f, -3.0f, 0.3f, -0.15f, -7.0f, 0.1f, 0.25f};
+    eqSettings[11] = {-1.0f, 0.1f, 0.45f, -2.0f, -0.3f, -0.15f, 14.0f, -0.1f, 0.15f, 22.0f, -0.6f, 0.5f};
+    eqSettings[12] = {1.0f, 0.0f, 0.0f, -1.0f, 0.2f, -0.15f, -6.0f, 0.0f, -0.15f, -14.0f, 0.4f, -0.1f};
+    eqSettings[13] = {0.0f, -0.1f, 0.35f, 1.0f, -0.2f, 0.15f, 19.0f, -0.1f, 0.1f, -35.0f, 0.5f, 0.2f};
+    eqSettings[14] = {-1.0f, 0.1f, -0.15f, 1.0f, 0.3f, 0.25f, 11.0f, 0.2f, -0.05f, 28.0f, -0.3f, -0.15f};
+    eqSettings[15] = {1.0f, -0.1f, 0.05f, -2.0f, -0.4f, -0.15f, -17.0f, 0.5f, 0.2f, -5.0f, 0.0f, 0.3f};
 }
