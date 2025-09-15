@@ -18,8 +18,8 @@ PluginEditor::PluginEditor(PluginProcessor& pluginProcessor)
       midLowGain("", pluginProcessor.apvts, "MIDLOWGAIN", -15.0f, 15.0f, "dB", juce::Colours::orange),
       lowFreq("Low", pluginProcessor.apvts, "LOWFREQ", 40.0f, 250.0f, "Hz", juce::Colours::red),
       lowGain("", pluginProcessor.apvts, "LOWGAIN", -15.0f, 15.0f, "dB", juce::Colours::red),
-      highBell("High Bell", pluginProcessor.apvts, "HIGHBELL"),
-      lowBell("Low Bell", pluginProcessor.apvts, "LOWBELL"),
+      highBell("Bell", pluginProcessor.apvts, "HIGHBELL"),
+      lowBell("Bell", pluginProcessor.apvts, "LOWBELL"),
       outputFader("Output", pluginProcessor.apvts, "OUTPUT")
 {
     setSize(184 * 3, 514);
@@ -27,7 +27,7 @@ PluginEditor::PluginEditor(PluginProcessor& pluginProcessor)
     addAndMakeVisible(leftChannel);
     addAndMakeVisible(rightChannel);
     addAndMakeVisible(inputKnob);
-    //addAndMakeVisible(micButton);
+    addAndMakeVisible(micButton);
     addAndMakeVisible(hpKnob);
     addAndMakeVisible(lpKnob);
     addAndMakeVisible(highFreq);
@@ -39,8 +39,8 @@ PluginEditor::PluginEditor(PluginProcessor& pluginProcessor)
     addAndMakeVisible(lowFreq);
     addAndMakeVisible(lowGain);
     addAndMakeVisible(highBell);
-    //addAndMakeVisible(lowBell);
-    //addAndMakeVisible(outputFader);
+    addAndMakeVisible(lowBell);
+    addAndMakeVisible(outputFader);
 }
 
 PluginEditor::~PluginEditor() = default;
@@ -67,35 +67,28 @@ void PluginEditor::resized() {
     auto midArea = area.removeFromLeft(184);
     auto rightArea = area;
 
-    {
-        leftChannel.setBounds(35, 0, 50, 100);
-        rightChannel.setBounds(95, 0, 50, 100);
+    // Left section
+    leftChannel.setBounds(35, 0, 50, 100);
+    rightChannel.setBounds(95, 0, 50, 100);
 
-        inputKnob.setBounds(40, 120, 100, 160);
+    inputKnob.setBounds(40, 120, 100, 160);
+    micButton.setBounds(138, 193, 35, 20);
 
-        hpKnob.setBounds(40, 230, 100, 160);
-        lpKnob.setBounds(40, 340, 100, 160);
+    hpKnob.setBounds(40, 230, 100, 160);
+    lpKnob.setBounds(40, 340, 100, 160);
 
-        /*auto buttonsArea = leftArea.removeFromTop(20);
-        micButton.setBounds(leftArea.removeFromTop(40));
-        hpKnob.setBounds(leftArea.removeFromTop(80));
-        lpKnob.setBounds(leftArea.removeFromTop(80));*/
-    }
+    // Central section
+    highFreq.setBounds(185, -15, 100, 160);
+    highGain.setBounds(265, 35, 100, 160);
+    highBell.setBounds(298, 48, 35, 20);
+    midHighFreq.setBounds(185, 95, 100, 160);
+    midHighGain.setBounds(265, 145, 100, 160);
+    midLowFreq.setBounds(185, 205, 100, 160);
+    midLowGain.setBounds(265, 255, 100, 160);
+    lowFreq.setBounds(185, 315, 100, 160);
+    lowGain.setBounds(265, 365, 100, 160);
+    lowBell.setBounds(218, 448, 35, 20);
 
-    // ==== MIDDLE COLUMN (Vertical EQ) ====
-    {
-        highFreq.setBounds(185, -15, 100, 160);
-        highGain.setBounds(265, 35, 100, 160);
-        midHighFreq.setBounds(185, 95, 100, 160);
-        midHighGain.setBounds(265, 145, 100, 160);
-        midLowFreq.setBounds(185, 205, 100, 160);
-        midLowGain.setBounds(265, 255, 100, 160);
-        lowFreq.setBounds(185, 315, 100, 160);
-        lowGain.setBounds(265, 365, 100, 160);
-    }
-
-    // ==== RIGHT COLUMN (Fader) ====
-    /*{
-        outputFader.setBounds(rightArea.withTrimmedTop(10).reduced(40, 10));
-    }*/
+    // Right section
+    //outputFader.setBounds(rightArea.withTrimmedTop(10).reduced(40, 10));
 }
