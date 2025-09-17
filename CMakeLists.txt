@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(CS2516 VERSION 0.1.0)
+project(FCS2516 VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -31,7 +31,7 @@ juce_add_plugin(${PROJECT_NAME}
     PLUGIN_MANUFACTURER_CODE FLSD
     PLUGIN_CODE AUPL
     FORMATS VST3 Standalone
-    PRODUCT_NAME "CS2516"
+    PRODUCT_NAME "FCS2516"
 )
 
 juce_generate_juce_header(${PROJECT_NAME})

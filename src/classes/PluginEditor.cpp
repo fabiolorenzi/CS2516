@@ -70,7 +70,7 @@ void PluginEditor::paint(juce::Graphics& graphics) {
 
     graphics.setColour(juce::Colours::whitesmoke);
     graphics.setFont(juce::Font(16.0f, juce::Font::bold));
-    graphics.drawText("CS2516  ", getLocalBounds().removeFromTop(30).removeFromRight(140), juce::Justification::centredRight, false);
+    graphics.drawText("FCS2516  ", getLocalBounds().removeFromTop(30).removeFromRight(140), juce::Justification::centredRight, false);
 }
 
 void PluginEditor::resized() {

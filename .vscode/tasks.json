@@ -25,7 +25,7 @@
         {
             "type": "shell",
             "label": "Run dev standalone",
-            "command": "./build/CS2516_artefacts/Debug/Standalone/CS2516.exe",
+            "command": "./build/FCS2516_artefacts/Debug/Standalone/FCS2516.exe",
             "group": "build",
             "detail": "Run dev standalone"
         },
@@ -40,7 +40,7 @@
         {
             "type": "shell",
             "label": "Build & run",
-            "command": "cmake --build build --config Debug; ./build/CS2516_artefacts/Debug/Standalone/CS2516.exe",
+            "command": "cmake --build build --config Debug; ./build/FCS2516_artefacts/Debug/Standalone/FCS2516.exe",
             "group": "build",
             "detail": "Build and run dev standalone"
         }

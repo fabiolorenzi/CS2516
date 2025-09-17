@@ -13,7 +13,7 @@ PluginProcessor::PluginProcessor()
 PluginProcessor::~PluginProcessor() = default;
 
 const juce::String PluginProcessor::getName() const {
-    return "CS2516";
+    return "FCS2516";
 }
 
 bool PluginProcessor::acceptsMidi() const {
