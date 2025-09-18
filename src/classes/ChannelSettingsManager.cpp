@@ -99,7 +99,7 @@ void ChannelSettingsManager::populateColourSettings() {
 }
 
 void ChannelSettingsManager::populateNoiseSettings() {
-    noiseLevelSettings = {0.0005f, 0.0006f, 0.0003f, 0.0007f, 0.0008f, 0.0004f, 0.0008f, 0.0005f, 0.0004f, 0.0005f, 0.0006f, 0.0005f, 0.0004f, 0.0008f, 0.0009f, 0.0007f};
+    noiseLevelSettings = {0.000025f, 0.00003f, 0.000015f, 0.000035f, 0.00004f, 0.00002f, 0.00004f, 0.000025f, 0.00002f, 0.000025f, 0.00003f, 0.000025f, 0.00002f, 0.00004f, 0.000045f, 0.000035f};
 }
 
 void ChannelSettingsManager::populateFiltersSettings() {
